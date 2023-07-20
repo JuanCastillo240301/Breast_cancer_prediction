@@ -6,6 +6,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+import matplotlib.pyplot as plt
 
 # Función para realizar la predicción y mostrar el resultado en una ventana de mensaje
 def perform_prediction():
@@ -26,6 +27,23 @@ def perform_prediction():
         messagebox.showinfo("Resultado", "El tumor es maligno.")
     else:
         messagebox.showinfo("Resultado", "El tumor es benigno.")
+
+# Función para mostrar la precisión del modelo en una nueva ventana
+def show_accuracy():
+    # Realizar la predicción en el conjunto de prueba
+    y_pred = knn.predict(X_test)
+
+    # Calcular la precisión del modelo
+    accuracy = accuracy_score(y_test, y_pred)
+
+    # Crear una ventana emergente para mostrar la precisión
+    accuracy_window = tk.Toplevel(window)
+    accuracy_window.title("Precisión del Modelo")
+    accuracy_window.geometry("300x200")
+
+    # Mostrar la precisión en una etiqueta de la ventana
+    accuracy_label = tk.Label(accuracy_window, text=f"Precisión del modelo: {accuracy:.2f}", font=("Arial", 14))
+    accuracy_label.pack(pady=20)
 
 # Crear la ventana principal
 window = tk.Tk()
@@ -93,6 +111,9 @@ for i, feature in enumerate(feature_names):
 predict_button = tk.Button(window, text="Realizar Predicción", command=perform_prediction, bg="#007BFF", fg="white")
 predict_button.grid(row=len(feature_names)//2, column=0, columnspan=4, pady=10)
 
+# Crear botón para mostrar la precisión del modelo
+accuracy_button = tk.Button(window, text="Mostrar Precisión del Modelo", command=show_accuracy, bg="#28a745", fg="white")
+accuracy_button.grid(row=len(feature_names)//2 + 1, column=0, columnspan=4, pady=10)
+
 # Ejecutar el bucle principal de la ventana
 window.mainloop()
-
